@@ -43,22 +43,20 @@ class CountSeats
 
         $testTest = array_slice($secondStep, -$remainingSeats, $remainingSeats, true);
 
-        $fourStep = [];
-        foreach ($thirdStep as $key => $val) {
-            foreach ($testTest as $key1) {
-                if($key = $key1) {
-                    $val += 1;
-                }
-            }
-            $fourStep[] = $key[$val];
+        $parties = [];
+        foreach ($testTest as $key => $val) {
+            $parties[] = $key;
         }
 
-//        return $fourStep;
-//        return $testTest;
-//        return $firstStep;
-//        return $secondStep;
-//        return $thirdStep;
-
+        foreach ($thirdStep as $key => $val) {
+            foreach ($parties as $key1 => $val1) {
+                if ($key == $val1) {
+                    $thirdStep[$key] += 1;
+                }
+            }
+        }
+        $this->result = $thirdStep;
+        return $this->result;
     }
 
     public function getPartyVotes()
