@@ -7,15 +7,23 @@ class CountSeats
     protected $totalSeats;
     protected $result;
     protected $partyVotes = [];
-    protected $data = [];
 
     public function __construct($votes, $seats)
     {
-        $this->partyVotes = $votes;
-        $this->totalSeats = $seats;
+        if(is_array($votes)) {
+            $this->partyVotes = $votes;
+        } else {
+            die('Only array allowed');
+        }
+
+        if(is_int($seats)) {
+            $this->totalSeats = $seats;
+        } else {
+            die('Only integer allowed!');
+        }
     }
 
-    public function countFraction()
+    public function countResult()
     {
         $sum = 0;
         foreach ($this->partyVotes as $party => $votes) {
@@ -26,12 +34,14 @@ class CountSeats
         foreach ($this->partyVotes as $party => $votes) {
             $firstStep[$party] = round(($votes * $this->totalSeats) / $sum, 4);
         }
+
         //fraction
         $secondStep = [];
         foreach ($firstStep as $first => $num) {
             $secondStep[$first] = $num - floor($num);
         }
         asort($secondStep);
+
         //int
         $thirdStep = [];
         foreach ($firstStep as $first => $num) {
@@ -41,10 +51,10 @@ class CountSeats
         $sumSeats = array_sum($thirdStep);
         $remainingSeats = $this->totalSeats - $sumSeats;
 
-        $testTest = array_slice($secondStep, -$remainingSeats, $remainingSeats, true);
+        $theLargest = array_slice($secondStep, -$remainingSeats, $remainingSeats, true);
 
         $parties = [];
-        foreach ($testTest as $key => $val) {
+        foreach ($theLargest as $key => $val) {
             $parties[] = $key;
         }
 
@@ -55,10 +65,12 @@ class CountSeats
                 }
             }
         }
+
         $this->result = $thirdStep;
         return $this->result;
     }
 
+    //getters
     public function getPartyVotes()
     {
         return $this->partyVotes;
@@ -72,5 +84,4 @@ class CountSeats
 }
 
 $test = new CountSeats(['B' => 5400, 'A' => 15000, 'C' => 5500, 'D' => 5550], 15);
-print_r($test->countFraction());
-
+print_r($test->countResult());
