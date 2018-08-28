@@ -13,13 +13,13 @@ class CountSeats
         if(is_array($votes)) {
             $this->partyVotes = $votes;
         } else {
-            die('Only array allowed');
+            throw new \Exception('Votes must be an array type!');
         }
 
         if(is_int($seats)) {
             $this->totalSeats = $seats;
         } else {
-            die('Only integer allowed!');
+            throw new \Exception('Seats must be an integer type!');
         }
     }
 
@@ -80,8 +80,11 @@ class CountSeats
     {
         return $this->totalSeats;
     }
-
 }
 
-$test = new CountSeats(['B' => 5400, 'A' => 15000, 'C' => 5500, 'D' => 5550], 15);
-print_r($test->countResult());
+try {
+    $test = new CountSeats(['B' => 5400, 'A' => 15000, 'C' => 5500, 'D' => 5550], 15);
+    print_r($test->countResult());
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}
