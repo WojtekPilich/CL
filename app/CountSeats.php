@@ -10,17 +10,15 @@ class CountSeats
 
     public function __construct($votes, $seats)
     {
-        if(is_array($votes)) {
-            $this->partyVotes = $votes;
-        } else {
+        if(! is_array($votes)) {
             throw new \Exception('Votes must be an array type!');
         }
+        $this->partyVotes = $votes;
 
-        if(is_int($seats)) {
-            $this->totalSeats = $seats;
-        } else {
+        if(! is_int($seats)) {
             throw new \Exception('Seats must be an integer type!');
         }
+        $this->totalSeats = $seats;
     }
 
     public function countResult()
